@@ -1,3 +1,5 @@
+export const runtime = "nodejs"
+
 import { NextRequest } from "next/server"
 import Stripe from "stripe"
 import { createClient } from "@supabase/supabase-js"
