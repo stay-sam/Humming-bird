@@ -11,16 +11,33 @@ export default function Home() {
   }
 
   return (
-    <main style={{ padding: 40 }}>
-      <h1>Humming Bird</h1>
+    <main
+      style={{
+        minHeight: "100vh",
+        background: "linear-gradient(135deg, #0f172a, #020617)",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        color: "#fff",
+      }}
+    >
+      <h1 style={{ fontSize: 48, marginBottom: 40 }}>
+        Humming Bird
+      </h1>
 
       <button
         onClick={handleCheckout}
         style={{
-          marginTop: 20,
-          padding: "12px 24px",
-          fontSize: 16,
+          padding: "16px 40px",
+          fontSize: 20,
+          fontWeight: "bold",
+          borderRadius: 12,
+          border: "none",
+          background: "#22c55e",
+          color: "#022c22",
           cursor: "pointer",
+          boxShadow: "0 10px 25px rgba(0,0,0,0.4)",
         }}
       >
         購入する（¥500）
