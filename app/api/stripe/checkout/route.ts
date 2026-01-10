@@ -1,24 +1,32 @@
 export const runtime = "nodejs"
 
-import { NextResponse } from "next/server"
+import Stripe from "stripe"
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2025-12-15.clover",
+})
 
 /**
- * 確認用 GET
- * ブラウザで直接開いたときに表示される
+ * 確認用：ブラウザで直接開くための GET
  */
 export async function GET() {
-  return NextResponse.json({
-    ok: true,
-    message: "Stripe checkout API is alive",
-  })
+  return new Response(
+    JSON.stringify({
+      ok: true,
+      message: "Stripe checkout API is alive",
+    }),
+    {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  )
 }
 
 /**
- * 本番用 POST（今は未使用）
+ * 実際の Checkout 用（後で使う）
  */
 export async function POST() {
-  return NextResponse.json({
-    ok: true,
-    message: "POST endpoint placeholder",
-  })
+  return new Response("POST endpoint ready", { status: 200 })
 }
