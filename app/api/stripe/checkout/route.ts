@@ -1,35 +1,24 @@
-import Stripe from "stripe"
-import { NextResponse } from "next/server"
-
 export const runtime = "nodejs"
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
+import { NextResponse } from "next/server"
 
-// ★ 確認用（GET）
+/**
+ * 確認用 GET
+ * ブラウザで直接開いたときに表示される
+ */
 export async function GET() {
-  return NextResponse.json({ ok: true })
+  return NextResponse.json({
+    ok: true,
+    message: "Stripe checkout API is alive",
+  })
 }
 
-// ★ 本番用（POST）
+/**
+ * 本番用 POST（今は未使用）
+ */
 export async function POST() {
-  const session = await stripe.checkout.sessions.create({
-    mode: "payment",
-    payment_method_types: ["card"],
-    line_items: [
-      {
-        price_data: {
-          currency: "jpy",
-          product_data: {
-            name: "Humming Bird プランA",
-          },
-          unit_amount: 199,
-        },
-        quantity: 1,
-      },
-    ],
-    success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/success`,
-    cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/pricing`,
+  return NextResponse.json({
+    ok: true,
+    message: "POST endpoint placeholder",
   })
-
-  return NextResponse.json({ url: session.url })
 }
