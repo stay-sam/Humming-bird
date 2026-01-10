@@ -1,11 +1,9 @@
-export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
+export const runtime = "nodejs"
 
 import Stripe from "stripe"
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2025-12-15.clover",
-})
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 export async function GET() {
   return new Response(
