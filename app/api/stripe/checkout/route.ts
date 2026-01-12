@@ -1,31 +1,23 @@
-export const dynamic = "force-dynamic"
 export const runtime = "nodejs"
+export const dynamic = "force-dynamic"
 
 import Stripe from "stripe"
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
+export async function POST(req: Request) {
+  // ★ Stripeはここで初期化（重要）
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
-export async function POST() {
   const session = await stripe.checkout.sessions.create({
-    mode: "payment",
+    mode: "subscription",
     payment_method_types: ["card"],
     line_items: [
       {
-        price_data: {
-          currency: "jpy",
-          product_data: {
-            name: "Humming Bird プラン",
-          },
-          unit_amount: 500,
-        },
+        price: process.env.STRIPE_PRICE_ID!,
         quantity: 1,
       },
     ],
-    success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/success`,
-    cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/cancel`,
-    metadata: {
-      plan: "basic",
-    },
+    success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/library`,
+    cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/`,
   })
 
   return Response.json({ url: session.url })
