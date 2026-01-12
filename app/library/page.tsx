@@ -1,37 +1,40 @@
 "use client"
 
-import { useLiveQuery } from "dexie-react-hooks"
-import { db } from "@/lib/db"
+import { useEffect, useState } from "react"
 
 export default function LibraryPage() {
-  const recordings = useLiveQuery(
-    () => db.recordings.orderBy("createdAt").reverse().toArray(),
-    []
-  )
+  const [loading, setLoading] = useState(true)
+  const [subscribed, setSubscribed] = useState(false)
+
+  useEffect(() => {
+    fetch("/api/me")
+      .then((res) => res.json())
+      .then((data) => {
+        setSubscribed(data.subscribed)
+        setLoading(false)
+      })
+      .catch(() => {
+        setLoading(false)
+      })
+  }, [])
+
+  if (loading) {
+    return <p>確認中...</p>
+  }
+
+  if (!subscribed) {
+    return (
+      <main style={{ padding: 40 }}>
+        <h1>このページは購入者限定です</h1>
+        <a href="/">トップに戻る</a>
+      </main>
+    )
+  }
 
   return (
-    <main style={{ padding: 40, color: "white" }}>
-      <h1>📚 My Library</h1>
-
-      {!recordings && <p>Loading...</p>}
-      {recordings?.length === 0 && <p>No recordings yet.</p>}
-
-      <ul>
-        {recordings?.map((rec) => {
-          const url = URL.createObjectURL(rec.audio)
-
-          return (
-            <li key={rec.id} style={{ marginBottom: 20 }}>
-              <audio controls src={url} />
-              <div>
-                <small>
-                  {new Date(rec.createdAt).toLocaleString()}
-                </small>
-              </div>
-            </li>
-          )
-        })}
-      </ul>
+    <main style={{ padding: 40 }}>
+      <h1>📚 有料コンテンツ</h1>
+      <p>ここに有料コンテンツを表示します。</p>
     </main>
   )
 }

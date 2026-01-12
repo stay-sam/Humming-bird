@@ -1,14 +1,19 @@
 "use client"
 
+import { useEffect, useState } from "react"
+
 export default function Home() {
   const handleCheckout = async () => {
     const res = await fetch("/api/stripe/checkout", {
       method: "POST",
     })
 
-    const data = await res.json()
-    window.location.href = data.url
-  }
+   const session = await supabase.auth.getSession()
+if (!session.data.session) {
+  window.location.href = "/login"
+  return
+}
+
 
   return (
     <main
