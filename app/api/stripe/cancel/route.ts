@@ -3,10 +3,17 @@ export const dynamic = "force-dynamic"
 
 import Stripe from "stripe"
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
+export async function POST(req: Request) {
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
-export async function POST() {
-  const customerId = "REPLACE_WITH_CUSTOMER_ID"
+  const { customerId } = await req.json()
+
+  if (!customerId) {
+    return Response.json(
+      { error: "customerId is required" },
+      { status: 400 }
+    )
+  }
 
   const subs = await stripe.subscriptions.list({
     customer: customerId,
